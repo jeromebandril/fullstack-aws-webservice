@@ -1,0 +1,7 @@
+FROM php:8.2.5RC1-apache-buster
+RUN apt update
+RUN apt upgrade -y
+# RUN touch /var/www/html/.htaccess
+
+EXPOSE 80
+EXPOSE 443
