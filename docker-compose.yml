@@ -8,9 +8,14 @@ services:
       - db
     volumes:
       - ./src:/var/www/html/
+      - ./certs:/certs
     ports:
       - 8080:80
       - 8443:443
+    environment:
+      - HTTPS: true
+      - SSL_CERT_FILE: /certs/cert.pem
+      - SSL_KEY_FILE: /certs/cert-key.pem
 
   db:
     container_name: mysql
