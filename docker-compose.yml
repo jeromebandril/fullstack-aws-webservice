@@ -5,7 +5,7 @@ services:
       dockerfile: DockerFile
     container_name: php-apache
     volumes:
-      - ./src:var/www/html/
+      - ./src:/var/www/html/
     ports:
       - 8080:80
       - 8443:443
@@ -13,7 +13,7 @@ services:
   db:
     container_name: mysql
     image: mysql:8.0.32
-    command: --default-authentication-plug=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
