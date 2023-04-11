@@ -10,9 +10,6 @@ services:
     volumes:
       - ./src:/var/www/html/
       - ./certs:/certs
-    ports:
-      - 8080:80
-      - 8443:443
     environment:
       - HTTPS:true
       - SSL_CERT_FILE:/certs/cert.pem
@@ -30,3 +27,14 @@ services:
       MYSQL_PASSWORD: admin
     ports:
       - 6033:3306
+
+  nginx:
+  image: nginx:latest
+  container_name: nginx
+  ports:
+    - 8080:80
+    - 8443:443
+  volumes:
+    - ./nginx.conf:/etc/nginx/nginx.conf
+  depends_on:
+    - web      
