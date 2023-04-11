@@ -2,6 +2,7 @@ version: '3.3'
 services:
   web: 
     build:
+      context: ./
       dockerfile: DockerFile
     container_name: php-apache
     depends_on:
@@ -13,9 +14,9 @@ services:
       - 8080:80
       - 8443:443
     environment:
-      - HTTPS: true
-      - SSL_CERT_FILE: /certs/cert.pem
-      - SSL_KEY_FILE: /certs/cert-key.pem
+      - HTTPS:true
+      - SSL_CERT_FILE:/certs/cert.pem
+      - SSL_KEY_FILE:/certs/cert-key.pem
 
   db:
     container_name: mysql
