@@ -17,7 +17,7 @@
 
   <div class="container-fluid mt-4 vh-100" id="main-container">
     <!-- sidebar  -->
-    <div class="row">
+    <section class="row">
       <aside class="col-md-2 d-none d-md-block bg-light sidebar sticky-element">
         <ul class="list-unstyled ps-0">
           <li class="mb-1">
@@ -33,7 +33,7 @@
             </div>
           </li>
           <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#setup-e2c-collapse" aria-expanded="true" onclick="goToSection('setup-e2c')">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#setup-e2c-collapse" aria-expanded="true" onclick="goTodiv('setup-e2c')">
               Set up E2C instace on aws
             </button>
             <div class="collapse show" id="setup-e2c-collapse" style="">
@@ -45,25 +45,27 @@
             </div>
           </li>
           <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#setup-webserver-collapse" aria-expanded="true" onclick="goToSection('setup-webserver')">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#setup-webserver-collapse" aria-expanded="true" onclick="goTodiv('setup-webserver')">
               Set up web server
             </button>
             <div class="collapse show" id="setup-webserver-collapse" style="">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a href="#setup-webserver-1" class="link-dark rounded">Docker installation and configuration</a></li>
                 <li><a href="#setup-webserver-2" class="link-dark rounded">Dockerfile and docker-compose</a></li>
+                <li><a href="#nginx-conf" class="link-dark rounded">Nginx configuration</a></li>
                 <li><a href="#setup-webserver-3" class="link-dark rounded">How I deployed my website</a></li>
               </ul>
             </div>
           </li>
           <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#https-support-collapse" aria-expanded="true" onclick="goToSection('https-support')">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#https-support-collapse" aria-expanded="true" onclick="goTodiv('https-support')">
               Add SSL/TLS support
             </button>
             <div class="collapse show" id="https-support-collapse" style="">
               <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a href="#create-ca" class="link-dark rounded">Create selft-signed CA</a></li>
                 <li><a href="#ca-docker-compose" class="link-dark rounded">In docker-compose</a></li>
+                <li><a href="#ca-nginx" class="link-dark rounded">In nginx configuration</a></li>
               </ul>
             </div>
           </li>
@@ -74,7 +76,7 @@
       <!-- main content -->
       <main class="col-md-10 ms-sm-auto col-lg-10 px-md-5">
 
-        <section id="get-started">
+        <div id="get-started">
           <h1># Getting Started</h1>
           <p>Here's my repository: <a href="https://github.com/jeromebandril/jerome-aws-website" target="_blank"> https://github.com/jeromebandril/jerome-aws-website </a></p>
           <div>
@@ -92,12 +94,10 @@
             </li>
             </ul>
           </div>
-     
-          <a href="test.html">ciao</a>
-        </section>
+        </div>
 
         <section id="setup-e2c">
-          <section>
+          <div>
             <h1># Set up E2C instace on aws</h1>
             <h2 id="launch-instance">Launch an instance</h2>
             Prima di tutto ci si connette alla console dell'aws e si cerca il servizio E2C.
@@ -119,8 +119,8 @@
               </li>
             </ol>
             <img src="assets/img/e2c_2.png" alt="">
-          </section>   
-          <section>
+          </div>   
+          <div>
             <h2 id="conf-firewall">Configure firewall</h2>
             Iniziamo a configurare il firewall:
             andiamo a modificare le regole in entrata per permettere i clients di connettersi al nostro sito web,
@@ -133,8 +133,8 @@
             nella 4 regole che abbiamo appena aggiunto  selezioniamo come source <mark>Anywhere - Ipv4</mark> (ossia 0.0.0.0/0), che significa
             che apriamo la connessione a tutti i dispositivi con ipv4. Salviamo le regole in basso a destra.
             <img src="assets/img/e2c_4.png" alt="">
-          </section>
-          <section>
+          </div>
+          <div>
             <h2 id="ssh-conn"> Connect to Instance via SSH </h2>
             Ritorniamo alla schermata dashboard dell'istanza (quella cliccando all'id istanza) e clicchiamo il <mark>connect</mark> in alto a destra.
             Ci porterà in una pagina dove nella sezione <mark>SSH client</mark> vi sarà una mini guida su come connettersi via ssh all'istanza.
@@ -143,26 +143,28 @@
             directory dove la chiave è salvata ed eseguiamolo. Alla richiesta di conferma che seguirà scrivete 'yes'.
             <img src="assets/img/e2c_5.png" alt="">
             <img src="assets/img/e2c_6.png" alt="">
-          </section>
+          </div>
         </section>
         <section id="setup-webserver">
           <h1># Set up our server</h1>
           Entrati via ssh nella nostra macchina in remoto, possiamo iniziare a configurare il nostro server web.
           In una nuova macchina (ubuntu nel nostro caso) è buona prassi aggiornare i packages con i comandi
           <pre><code class="language-bash">sudo apt update && sudo apt upgrade -y</code></pre>
-          <section>
+          <div>
             <h2 id="setup-webserver-1">Docker installation e configuration</h2>
             Installiamo docker con:
             <pre><code class="language-bash">sudo apt install docker.io</code> </pre>
-            Anziché installare I docker images direttamente
+            Anziché installare I docker images direttamente,
             utilizzeremo DockerFile e docker-compose in modo da semplificare la configurazione e riprodurre
             uniformemente l'enviroment in modo distribuito se necessario.
-            Per eseguire un web server (apache) ho scelto di utillizzare l'immagine
-            php con tag apache (cioè php con apache inclusa) e l'immagine per mysql:
-            <a href="https://hub.docker.com/layers/library/php/8.2.5RC1-apache-buster/images/sha256-5083c1bf200c535d87b00ffd1a535cd7349395230d6d8132d423373c96a766ea?context=explore">php:8.2.5RC1-apache-buster</a>
-            e <a href="https://hub.docker.com/layers/library/mysql/8.0.32/images/sha256-c86dfd69b3d1437e5d192447f0bdc57407d48bd379b97a453e11d72b97962e3b?context=explore">mysql:8.0.32</a>
-          </section>
-          <section>
+            Per eseguire un web server (apache) ho scelto di utillizzare quersti docker images:
+            <ul>
+              <li>per mysql <a href="https://hub.docker.com/layers/library/mysql/8.0.32/images/sha256-c86dfd69b3d1437e5d192447f0bdc57407d48bd379b97a453e11d72b97962e3b?context=explore">mysql:8.0.32</a></li>
+              <li>php con tag apache (cioè php con apache inclusa) <a href="https://hub.docker.com/layers/library/php/8.2.5RC1-apache-buster/images/sha256-5083c1bf200c535d87b00ffd1a535cd7349395230d6d8132d423373c96a766ea?context=explore">php:8.2.5RC1-apache-buster</a>, che verrà poi linkata all'immagine di msql per permettere ai due container di comunicare</li>
+              <li>nginx, un webserver che però ho utilizzato come reverse proxy per inoltrare le richieste ad apache (alla fine non è servito a questo scopo, ma è stato utile per configurare il SSL e i CA in modo semplice) </li>
+            </ul>
+          </div>
+          <div>
             <h2 id="setup-webserver-2">Dockerfile e docker-compose</h2>
             Si usano questi file Dockerfile e docker-compose.yml per configurare i containers in modo automatico.
             Si crea quindi docker-compose.yml file nella directory root del nostro progetto web e si scrive
@@ -170,8 +172,18 @@
             <img src="assets/img/docker_1.png" alt="">
             e DockerFile file sempre nella root directory:
             <img src="assets/img/docker_2.png" alt="">
-          </section>
-          <section>
+          </div>
+          <div>
+            <h2 id="nginx-conf">NGINX configurarion</h2>
+            Nella root del nostro progetto web ho creato il file <mark>nginx.conf</mark>.
+            Questo codice è la configurazione di base per un server web Nginx che ascolta sulla porta 80 e instrada le 
+            richieste al servizio PHP Apache che ascolta sulla stessa porta. In particolare, la direttiva listen specifica la porta 
+            su cui il server ascolta, la direttiva server_name specifica il nome del server, e la direttiva location definisce come Nginx 
+            deve instradare le richieste HTTP al servizio PHP Apache tramite il proxy inverso. Le direttive proxy_set_header vengono 
+            utilizzate per impostare alcune intestazioni HTTP per le richieste inoltrate al servizio PHP Apache.
+            <img src="assets/img/nginx_1.png" alt="">
+          </div>
+          <div>
             <h2 id="setup-webserver-3">How I deployed my website</h2>
             Per spostare il nostro progetto all'interno del web server è possibile utillizare
             il protocollo ftps. Tuttavia per semplificazione, avendo il progetto già su
@@ -181,56 +193,50 @@
             A questo punto ci spostiamo in quella directory ed eseguiamo il file docker-compose con il comando:
             <pre><code class="language-bash">cd /var/www/html </code></pre>
             <pre><code class="language-bash">sudo docker-compose up</code></pre>
-          </section>
+            Per fermare i container si usa il comando:
+            <pre><code class="language-bash">sudo docker-compose stop</code></pre>
+            Adesso il mio sitoweb è raggiungibile via http. Nella schermata dashboard dell'istanza E2C si può recuperare l'url per raggiungere il sito.
+          </div>
         </section>
         <section id="https-support">
           <h1># Add SSL/TLS support</h1>
-          <section>
+          <div>
             <h2 id="create-ca">Create a self-signed certificate</h2>
-            Per creare un certificato autofirmato ho fatto utilizzo di <a href="https://www.openssl.org/">openSSL</a>.
-            Nella macchina locale si installa openssl con il comando:
-            <pre><code class="language-bash">sudo apt install openssl</code></pre>
             <ol>
+              <li>
+                Per creare un certificato autofirmato ho fatto utilizzo di <a href="https://www.openssl.org/">openSSL</a>.
+                Nella macchina locale si installa openssl con il comando:
+                <pre><code class="language-bash">sudo apt install openssl</code></pre>
+              </li>
               <li>
                 Si genera la chiave privata per il certificato (è importante mantenere segreto questa chiave poiché viene
                 utilizzata per firmare i certificati).
-                Dopo l'esecuzione del comando viene chiesto l'inserimento di una passphrase che aumenta ulteriormente la sicurezza.
-                (la chiave è crittografata utilizzando l'algoritmo simmetrico aes256, l'output è il file ca-key.pem e sarà
-                di lunghezza 4096 bits)
-                <pre><code class="language-bash">sudo openssl genrsa -aes256 -out ca-key.pem 4096</code></pre>
+                <pre><code class="language-bash">sudo openssl genrsa -out mykey.key 4096</code></pre>
               </li>
               <li>
-                Si genera il certificato self-signed pubblico che servirà come root CA (il certificato è valido per 3650 giorni e l'output è nel file ca.pem).
-                <pre><code class="language-bash">sudo req -new -x509 -sha256 -days 3650 -key ca-key.pem -out ca.pem</code></pre>
+                Si genera la richiesta di firma del certificato (output: mycsr.csr) 
+                <pre><code class="language-bash">sudo openssl req -new -key mykey.key -out mycsr.csr</code></pre>
               </li>
               <li>
-                Si genera la chiave privata RSA (di 4096 bit e l'output nel file cert-key.pem)
-                <pre><code class="language-bash">sudo openssl genrsa -out cert-key.pem 4096</code></pre>
-              </li>
-              <li>
-                Si crea una richiesta di firma del certificato (CSR certificate signing request).
-                <pre><code class="language-bash">sudo openssl req -new -sha256 -subj "/CN=your-name" -key cert-key.pem -out cert.csr</code></pre>
-              </li>
-              <li>
-                Si crea un extfile per le opzioni, in questo caso vogliamo assegnare il certificato ad uno specifico host (dns name e ip).
-                <pre><code class="language-bash">echo "subjectAltName=DNS:your-dns-name,IP:your-ip >> extfile.cnf </code></pre>
-              </li>
-              <li>
-                Si crea finalmente il certificato, firmato dal CA certificate e dalla chiave privata creati precedentemente.
-                <pre><code class="language-bash">sudo openssl x509 -req -sha256 -days 3650 -in cert.csr -CA ca.pem -CAkey ca-key.pem -out cert.pem -extfile extfile.cnf -CAcreateserial </code></pre>
+                Si genera il certificato self-signed pubblico (il certificato è valido per 365 giorni, output: mycert.crt).
+                <pre><code class="language-bash">openssl x509 -req -days 365 -in mycsr.csr -signkey mykey.key -out mycert.crt</code></pre>
               </li>
             </ol>
-          </section>
-          <section>
+          </div>
+          <div>
             <h2 id="ca-docker-compose">In docker-compose</h2>
-            Precedentemente nel docker-compose avevamo: montato in volumes <em>./certs</em>, dove saranno presenti i certificati; in enviroment avevamo abilitato
-            la connessione HTTPS e stabilito  i path del certificato e chiave per il web server.
+            Precedentemente nel docker-compose avevamo: montato come volume in nginx <em>./ssl</em>, in questo modo il suo contenuto è visibile dalla directory /etc/nginx/ssl/ (se ques'ultima cartella non esiste, possiamo crearla noi).
+            All'interno di ./ssl saranno presenti i certificati che ho appena creato. Inoltre ho abilitato HTTPS in apache. 
             <img src="assets/img/ca_1.png" alt="">
-          </section>
-        </section>
-        <section>
-          <h1>NGINX configuration</h1>
-          this configuration sets up a reverse proxy that listens on port 80 and forwards requests to the PHP Apache server running on port 8080.
+          </div>
+          <div>
+            <h2 id="ca-nginx">In nginx config</h2>
+            Si modifica il file <mark>nginx.conf</mark> in modo tale da accettare solo le connessioni in https:
+            questa confgurazione abilita la connessione HTTPS (HTTP sicuro) utilizzando un certificato SSL (Secure Sockets Layer) auto-firmato che abbiamo creato precedentemente. 
+            La configurazione è impostata per utilizzare la porta 443 per le connessioni HTTPS, quindi tutti i dati scambiati tra il client e il server saranno adesso crittografati.
+            Inoltre, il file SSL del certificato e la chiave privata sono specificati utilizzando le direttive "ssl_certificate" e "ssl_certificate_key", rispettivamente. 
+            <img src="assets/img/nginx_2.png" alt="">
+          </div>
         </section>
       </main>
     </div>

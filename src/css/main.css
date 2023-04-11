@@ -103,3 +103,7 @@ img {
   display: block;
   width: 550px;
 }
+
+section {
+  margin-top: 60px;
+}

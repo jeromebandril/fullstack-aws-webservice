@@ -1,11 +1,10 @@
-// $(document).ready(function() {
-//   // Check for session cookie
-//   if (!document.cookie.includes("session=")) {
-//     // Redirect to login page
-//     console.log("ciao");
-//     window.location.href = "./login.html";
-//   }
-// });
+$(document).ready(function() {
+  // Check for session cookie
+  if (!document.cookie.includes("session=")) {
+    // Redirect to login page
+    window.location.href = "./login.html";
+  }
+});
 
 function goToSection(id) {
   var button = document.querySelector(`button[data-bs-target="#${id}-collapse"]`);

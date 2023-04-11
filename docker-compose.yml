@@ -36,3 +36,5 @@ services:
       - ./ssl:/etc/nginx/ssl
     depends_on:
       - web
+
+      
