@@ -1,12 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="libraries/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+  <!-- prism css -->
+  <link rel="stylesheet" href="libraries/prims.js/prism.css">
+  <!-- My css -->
+  <link rel="stylesheet" href="css/main.css">
+  
+  <title>Jerome website</title>
 </head>
 <body>
-  
-</body>
+
+  <div class="container-fluid mt-4 vh-100" id="main-container">
+    <!-- sidebar  -->
+    <div class="row">
+      <aside class="col-md-2 d-none d-md-block bg-light sidebar sticky-element">
+        <ul class="list-unstyled ps-0">
+          <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+              Home
+            </button>
+            <div class="collapse show" id="home-collapse" style="">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="#" class="link-dark rounded">Overview</a></li>
+                <li><a href="#" class="link-dark rounded">Updates</a></li>
+                <li><a href="#" class="link-dark rounded">Reports</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#setup-e2c-collapse" aria-expanded="true" onclick="goToSection('setup-e2c')">
+              Set up E2C instace on aws
+            </button>
+            <div class="collapse show" id="setup-e2c-collapse" style="">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="#launch-instance" class="link-dark rounded">Launch an instance</a></li>
+                <li><a href="#conf-firewall" class="link-dark rounded">Configure firewall</a></li>
+                <li><a href="#ssh-conn" class="link-dark rounded">Connect to instance via SSH</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#setup-webserver-collapse" aria-expanded="true" onclick="goToSection('setup-webserver')">
+              Set up web server
+            </button>
+            <div class="collapse show" id="setup-webserver-collapse" style="">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="#setup-webserver-1" class="link-dark rounded">Docker installation and configuration</a></li>
+                <li><a href="#setup-webserver-2" class="link-dark rounded">Dockerfile and docker-compose</a></li>
+                <li><a href="#setup-webserver-3" class="link-dark rounded">How I deployed my website</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse" data-bs-target="#https-support-collapse" aria-expanded="true" onclick="goToSection('https-support')">
+              Add SSL/TLS support
+            </button>
+            <div class="collapse show" id="https-support-collapse" style="">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="#create-ca" class="link-dark rounded">Create selft-signed CA</a></li>
+                <li><a href="#ca-docker-compose" class="link-dark rounded">In docker-compose</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        <div class="position-absolute bottom-0 m-auto">By Jerome Bandril</div>
+      </aside>
+
+      <!-- main content -->
+      <main class="col-md-10 ms-sm-auto col-lg-10 px-md-5">
+
+        <section id="get-started">
+          <h1># Getting Started</h1>
+          <p>Here's my repository: <a href="https://github.com/jeromebandril/jerome-aws-website" target="_blank"> https://github.com/jeromebandril/jerome-aws-website </a></p>
+          <div>
+            Le tecnologie utilizzate per sviluppare il sito web sono:
+            <ul>
+              <li>back-end <ul><li>php</li></ul></li>
+              <li>front-end 
+                <ul>
+                  <li>html and css</li>
+                  <li>bootstrap5.3</li>
+                  <li>js vanillia</li>
+                  <li>jQuery3.6.5</li>
+                  <li>prism.js</li>
+                </ul>
+            </li>
+            </ul>
+          </div>
+     
+          <a href="test.html">ciao</a>
+        </section>
+
+        <section id="setup-e2c">
+          <section>
+            <h1># Set up E2C instace on aws</h1>
+            <h2 id="launch-instance">Launch an instance</h2>
+            Prima di tutto ci si connette alla console dell'aws e si cerca il servizio E2C.
+            una volta entrati si crea l'istanza che ospiterà il nostro sito web cliccando su launch instance.
+            <img src="assets/img/e2c_1.png" alt="">
+            Nella pagina in cui siamo stati portati compiliamo la configurazione dell'istanza dove:
+            <ol>
+              <li><mark>Name</mark> -> inseriamo il nome dell'istanza</li>
+              <li><mark>Application and OS images</mark> -> selezioniamo il sistema operativo da utilizzare (io ho scelto Ubuntu) </li>
+              <li>
+                <mark>key pair</mark> -> ho creato una nuova chiave, si dà un nome a piacere, ho selezionato il tipo RSA e il formato <em>.pem</em>.
+                una volta cliccato su create key pair ti farà salvare il file <em>.pem</em> sulla tua macchina locale, e sarà necessario come
+                identificatore e per l'autorizzazione a collegarci alla nostra istanza E2C.
+              </li>
+              <li>
+                si clicca<mark> launch instance</mark>. una volta finito il launch, potremo cliccare su <mark>instances</mark> che ci porterà
+                nella dashboard dove sono listati tutte le nostre istanze. Si clicca sull'id dell'istanza che abbiamo creato
+                e si prosegue nella configurazione.
+              </li>
+            </ol>
+            <img src="assets/img/e2c_2.png" alt="">
+          </section>   
+          <section>
+            <h2 id="conf-firewall">Configure firewall</h2>
+            Iniziamo a configurare il firewall:
+            andiamo a modificare le regole in entrata per permettere i clients di connettersi al nostro sito web,
+            ciò significa aprire le porte per la connessione http e/o https.
+            Nella schermata dell'istanza, nella zona in basso, si clicca <mark>Security</mark> e poi sul wizard del <mark>security groups</mark>.
+            <img src="assets/img/e2c_3.png" alt="">
+            nella schermata che ci porterà potremo modificare le regole d'entrata, quindi clicchiamo <mark>edit inbound rules</mark>.
+            aggiungiamo come annunciato in precedenza le porte http e https. dopodiché aggiungeremo inoltre
+            le regole in type <mark>custom TCP</mark> per le porte 8080 e 8443, che verranno utilizzate per il forwarding (rispettivamente 8080:80 e 8443:443).
+            nella 4 regole che abbiamo appena aggiunto  selezioniamo come source <mark>Anywhere - Ipv4</mark> (ossia 0.0.0.0/0), che significa
+            che apriamo la connessione a tutti i dispositivi con ipv4. Salviamo le regole in basso a destra.
+            <img src="assets/img/e2c_4.png" alt="">
+          </section>
+          <section>
+            <h2 id="ssh-conn"> Connect to Instance via SSH </h2>
+            Ritorniamo alla schermata dashboard dell'istanza (quella cliccando all'id istanza) e clicchiamo il <mark>connect</mark> in alto a destra.
+            Ci porterà in una pagina dove nella sezione <mark>SSH client</mark> vi sarà una mini guida su come connettersi via ssh all'istanza.
+            Possiamo copiare il comando sotto la voce Example. Assicuriamoci di avere a disposizione la chiave.pem che in precedenza
+            (al momento del launch dell'istanza) avevamo creato. Incolliamo il comando nel terminal di piacere nella stessa
+            directory dove la chiave è salvata ed eseguiamolo. Alla richiesta di conferma che seguirà scrivete 'yes'.
+            <img src="assets/img/e2c_5.png" alt="">
+            <img src="assets/img/e2c_6.png" alt="">
+          </section>
+        </section>
+        <section id="setup-webserver">
+          <h1># Set up our server</h1>
+          Entrati via ssh nella nostra macchina in remoto, possiamo iniziare a configurare il nostro server web.
+          In una nuova macchina (ubuntu nel nostro caso) è buona prassi aggiornare i packages con i comandi
+          <pre><code class="language-bash">sudo apt update && sudo apt upgrade -y</code></pre>
+          <section>
+            <h2 id="setup-webserver-1">Docker installation e configuration</h2>
+            Installiamo docker con:
+            <pre><code class="language-bash">sudo apt install docker.io</code> </pre>
+            Anziché installare I docker images direttamente
+            utilizzeremo DockerFile e docker-compose in modo da semplificare la configurazione e riprodurre
+            uniformemente l'enviroment in modo distribuito se necessario.
+            Per eseguire un web server (apache) ho scelto di utillizzare l'immagine
+            php con tag apache (cioè php con apache inclusa) e l'immagine per mysql:
+            <a href="https://hub.docker.com/layers/library/php/8.2.5RC1-apache-buster/images/sha256-5083c1bf200c535d87b00ffd1a535cd7349395230d6d8132d423373c96a766ea?context=explore">php:8.2.5RC1-apache-buster</a>
+            e <a href="https://hub.docker.com/layers/library/mysql/8.0.32/images/sha256-c86dfd69b3d1437e5d192447f0bdc57407d48bd379b97a453e11d72b97962e3b?context=explore">mysql:8.0.32</a>
+          </section>
+          <section>
+            <h2 id="setup-webserver-2">Dockerfile e docker-compose</h2>
+            Si usano questi file Dockerfile e docker-compose.yml per configurare i containers in modo automatico.
+            Si crea quindi docker-compose.yml file nella directory root del nostro progetto web e si scrive
+            (ricordo che il source code si trova nella mia <a href="https://github.com/jeromebandril/jerome-aws-website" target="_blank">repository su github</a>):
+            <img src="assets/img/docker_1.png" alt="">
+            e DockerFile file sempre nella root directory:
+            <img src="assets/img/docker_2.png" alt="">
+          </section>
+          <section>
+            <h2 id="setup-webserver-3">How I deployed my website</h2>
+            Per spostare il nostro progetto all'interno del web server è possibile utillizare
+            il protocollo ftps. Tuttavia per semplificazione, avendo il progetto già su
+            una repo di github, ho direttamente eseguito il comando git clone all'interno delll'istanza E2C.
+            <pre><code class="language-bash">sudo git clone https://github.com/jeromebandril/jerome-aws-website /var/www/html</code></pre>
+            Il comando appena eseguito copierà la repository nella directory /var/www/html (la root dove apache server cercherà l'index.html).
+            A questo punto ci spostiamo in quella directory ed eseguiamo il file docker-compose con il comando:
+            <pre><code class="language-bash">cd /var/www/html </code></pre>
+            <pre><code class="language-bash">sudo docker-compose up</code></pre>
+          </section>
+        </section>
+        <section id="https-support">
+          <h1># Add SSL/TLS support</h1>
+          <section>
+            <h2 id="create-ca">Create a self-signed certificate</h2>
+            Per creare un certificato autofirmato ho fatto utilizzo di <a href="https://www.openssl.org/">openSSL</a>.
+            Nella macchina locale si installa openssl con il comando:
+            <pre><code class="language-bash">sudo apt install openssl</code></pre>
+            <ol>
+              <li>
+                Si genera la chiave privata per il certificato (è importante mantenere segreto questa chiave poiché viene
+                utilizzata per firmare i certificati).
+                Dopo l'esecuzione del comando viene chiesto l'inserimento di una passphrase che aumenta ulteriormente la sicurezza.
+                (la chiave è crittografata utilizzando l'algoritmo simmetrico aes256, l'output è il file ca-key.pem e sarà
+                di lunghezza 4096 bits)
+                <pre><code class="language-bash">sudo openssl genrsa -aes256 -out ca-key.pem 4096</code></pre>
+              </li>
+              <li>
+                Si genera il certificato self-signed pubblico che servirà come root CA (il certificato è valido per 3650 giorni e l'output è nel file ca.pem).
+                <pre><code class="language-bash">sudo req -new -x509 -sha256 -days 3650 -key ca-key.pem -out ca.pem</code></pre>
+              </li>
+              <li>
+                Si genera la chiave privata RSA (di 4096 bit e l'output nel file cert-key.pem)
+                <pre><code class="language-bash">sudo openssl genrsa -out cert-key.pem 4096</code></pre>
+              </li>
+              <li>
+                Si crea una richiesta di firma del certificato (CSR certificate signing request).
+                <pre><code class="language-bash">sudo openssl req -new -sha256 -subj "/CN=your-name" -key cert-key.pem -out cert.csr</code></pre>
+              </li>
+              <li>
+                Si crea un extfile per le opzioni, in questo caso vogliamo assegnare il certificato ad uno specifico host (dns name e ip).
+                <pre><code class="language-bash">echo "subjectAltName=DNS:your-dns-name,IP:your-ip >> extfile.cnf </code></pre>
+              </li>
+              <li>
+                Si crea finalmente il certificato, firmato dal CA certificate e dalla chiave privata creati precedentemente.
+                <pre><code class="language-bash">sudo openssl x509 -req -sha256 -days 3650 -in cert.csr -CA ca.pem -CAkey ca-key.pem -out cert.pem -extfile extfile.cnf -CAcreateserial </code></pre>
+              </li>
+            </ol>
+          </section>
+          <section>
+            <h2 id="ca-docker-compose">In docker-compose</h2>
+            Precedentemente nel docker-compose avevamo: montato in volumes <em>./certs</em>, dove saranno presenti i certificati; in enviroment avevamo abilitato
+            la connessione HTTPS e stabilito  i path del certificato e chiave per il web server.
+            <img src="assets/img/ca_1.png" alt="">
+          </section>
+        </section>
+      </main>
+    </div>
+    </div>
+  </div>
+
+
+  <!-- Bootstrap JS -->
+  <script src="libraries/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+  <!-- prism js -->
+  <script src="libraries/prims.js/prism.js"></script>
+  <!-- jQuery -->
+  <script src="libraries/jquery-3.6.3.js"></script>
+  <script src="js/main.js"></script>
 </html>
