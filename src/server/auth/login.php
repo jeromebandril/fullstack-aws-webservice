@@ -7,7 +7,6 @@ session_start();
 $emailOrUsername = $_POST['email'];
 $psw = password_hash($_POST['password'], PASSWORD_DEFAULT); //bcrypt
 
-//TODO regex for email
 $query = 'SELECT id FROM users WHERE (email LIKE ? OR username LIKE ?) AND password_bcrypt LIKE ?';
 
 $stmt = $conn->prepare($query);
