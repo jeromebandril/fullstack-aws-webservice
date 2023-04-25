@@ -1,6 +1,9 @@
 FROM php:8.2.5RC1-apache-buster
 RUN apt update
 RUN apt upgrade -y
-
+RUN a2enmod rewrite
+#trying to fix missing mysqli extension in php
+RUN apt docker-php-ext-install mysqli 
+    
 EXPOSE 80
 EXPOSE 443
