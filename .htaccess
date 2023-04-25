@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Redirect all requests to login.html
+RewriteCond %{REQUEST_URI} !^/login\.html$
+#RewriteRule ^ /src/server/auth/permission.php [R,L]
+RewriteRule ^ /login.html [R,L]
+
