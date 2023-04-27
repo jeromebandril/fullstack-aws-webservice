@@ -1,0 +1,16 @@
+RewriteEngine On
+
+
+RewriteCond %{REQUEST_URI} !\.css$
+RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|gif|png|js)$
+RewriteCond %{REQUEST_URI} !\.map$
+# Redirect all requests to check_auth.php except for index.html, login.html, and check_auth.php itself:
+RewriteCond %{REQUEST_URI} !^/index\.html$
+RewriteCond %{REQUEST_URI} !^/login\.html$
+RewriteCond %{REQUEST_URI} !^/server/auth/check_auth\.php$
+RewriteRule ^ /server/auth/check_auth.php [L]
+
+# If the user is logged in, allow access to index.html
+RewriteCond %{REQUEST_URI} ^/index\.html$
+RewriteCond %{REQUEST_URI} !^/server/auth/check_auth\.php$
+RewriteRule ^(.*)$ /index.html [L]
