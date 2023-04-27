@@ -9,6 +9,8 @@ services:
       - db
     volumes:
       - ./src:/var/www/html/
+      - ./apache2.conf:/etc/apache2/apache2.conf
+      - ./sites-enabled:/etc/apache2/sites-enabled
     environment:
       - HTTPS:true
 
